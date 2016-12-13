@@ -17,26 +17,37 @@ namespace 书店零售管理系统
 
         public string checkLogin(string uid, string userpwd)
         {
-            
-            string result = "";         
+
+            string result = "";
             string cmdText = "select F_POWER from user where F_UID = '" + uid + "' and F_PASSWORD = '" + userpwd + "' ";
             CommandType cmdType = CommandType.Text;
-            MySqlDataReader sread = ExecuteReader(cmdType, cmdText,null);             
+            MySqlDataReader sread = ExecuteReader(cmdType, cmdText, null);
             if (sread.Read())
             {
                 result = sread[0].ToString();
-            }          
+            }
+            return result;
+        }
+        public int getNumber(String cmdText)
+        {
+            int result = 0;
+            CommandType cmdType = CommandType.Text;
+            MySqlDataReader sread = ExecuteReader(cmdType, cmdText, null);
+            if (sread.Read())
+            {
+                result = Convert.ToInt32(sread[0].ToString());
+            }
             return result;
         }
         public MySqlConnection getMySqlConnection()
         {
-            MySqlConnection conn = new MySqlConnection(mysqlStr);           
+            MySqlConnection conn = new MySqlConnection(mysqlStr);
             return conn;
         }
         public MySqlCommand getMySqlCommand(string sql)
         {
             MySqlConnection conn = new MySqlConnection(mysqlStr);
-            MySqlCommand com = new MySqlCommand(sql,conn);
+            MySqlCommand com = new MySqlCommand(sql, conn);
             return com;
         }
         /// <summary>
@@ -59,11 +70,12 @@ namespace 书店零售管理系统
                     cmd.Parameters.Clear();
                     return val;
                 }
-            }catch
+            }
+            catch
             {
                 return 0;
             }
-            
+
 
 
 
@@ -79,11 +91,11 @@ namespace 书店零售管理系统
         /// <param name="cmdText">存储过程名称或者sql命令语句</param>
         /// <param name="commandParameters">执行命令所用参数的集合</param>
         /// <returns>包含结果的读取器</returns>
-        public  MySqlDataReader ExecuteReader(CommandType cmdType, string cmdText, params MySqlParameter[] commandParameters) 
+        public MySqlDataReader ExecuteReader(CommandType cmdType, string cmdText, params MySqlParameter[] commandParameters)
         {
-           
+
             MySqlCommand cmd = new MySqlCommand();
-          
+
             MySqlConnection conn = new MySqlConnection(mysqlStr);
             //在这里我们用一个try/catch结构执行sql文本命令/存储过程，因为如果这个方法产生一个异常我们要关闭连接，因为没有读取器存在，
             //因此commandBehaviour.CloseConnection 就不会执行
@@ -153,7 +165,7 @@ namespace 书店零售管理系统
             if (conn.State != ConnectionState.Open)
                 conn.Open();
             cmd.Connection = conn;
-            Console.WriteLine("执行sql："+cmdText);
+            Console.WriteLine("执行sql：" + cmdText);
             cmd.CommandText = cmdText;
             if (trans != null)
                 cmd.Transaction = trans;
