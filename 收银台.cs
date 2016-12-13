@@ -85,6 +85,7 @@ namespace 书店零售管理系统
                     this.textBox6.Text = p.ToString();
                 }
                 this.textBox10.Text = System.DateTime.Now.ToString();
+                this.textBox11.Text = "1";
                 this.havebook = true;
             }
            
@@ -134,31 +135,63 @@ namespace 书店零售管理系统
             double realprice = Convert.ToDouble(this.textBox7.Text.ToString().Trim());
             string sId = this.textBox9.Text.ToString().Trim();          
             string time = this.textBox10.Text.ToString().Trim();
-            string cmdText = "insert into sell (F_BID,F_UID,F_PRICE,F_DATA,F_SID) values('" + bookId+"','"+uId+"','"+realprice+"','"+time+"','"+sId+"')";
-            CommandType cmdType = CommandType.Text;
-            MysqlHelper helper = new MysqlHelper();
-            int result = helper.ExecuteNonQuery(cmdType, cmdText,null);
-            if (result == 1)
+            int n = Convert.ToInt32(this.textBox11.Text.ToString().Trim());
+            if (n > 0)
             {
-                MessageBox.Show("交易成功！");
-                havebook = false;
-                this.textBox1.Text = "";
-                this.textBox2.Text = "";
-                this.textBox3.Text = "";
-                this.textBox4.Text = "";
-                this.textBox5.Text = "";
-                this.textBox6.Text = "";
-                this.textBox7.Text = "";
-                this.textBox8.Text = "";
-                this.textBox10.Text = "";
+                string cmdText = "insert into sell (F_BID,F_UID,F_PRICE,F_DATA,F_SID) values('" + bookId + "','" + uId + "','" + realprice + "','" + time + "','" + sId + "')";
+                CommandType cmdType = CommandType.Text;
+                MysqlHelper helper = new MysqlHelper();
+                try
+                {
+                    for (int i = 0; i < n; i++)
+                    {
+                        helper.ExecuteNonQuery(cmdType, cmdText, null);
+                    }
 
+                    MessageBox.Show("交易成功！");
+                    havebook = false;
+                    this.textBox1.Text = "";
+                    this.textBox2.Text = "";
+                    this.textBox3.Text = "";
+                    this.textBox4.Text = "";
+                    this.textBox5.Text = "";
+                    this.textBox6.Text = "";
+                    this.textBox7.Text = "";
+                    this.textBox8.Text = "";
+                    this.textBox10.Text = "";
+                    this.textBox11.Text = "";
+                }
+                catch
+                {
+                    throw;
+                }
+               
+               
+               
+
+                
             }
+            else
+            {
+                MessageBox.Show("数量必须大于零！");
+            }
+           
 
 
 
         }      
 
         private void textBox6_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox11_TextChanged(object sender, EventArgs e)
         {
 
         }
